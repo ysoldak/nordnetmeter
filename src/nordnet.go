@@ -47,6 +47,45 @@ func (b *nordnet) getReturns(periods []string, instrumentId int) ([]float64, err
 	return returns, nil
 }
 
+func (b *nordnet) getLast(instrumentId int) (float64, error) {
+	url := b.server + "/market-data/price-time-series/v2/returns/" + strconv.Itoa(instrumentId)
+	println(url)
+	req := newGET(url, nil)
+	res, err := b.client.sendHttp(req, false)
+	if err != nil {
+		return 0, err
+	} else {
+		trace(string(res.bytes))
+	}
+
+	data := string(res.bytes)
+	day1 := `"DAY_1"`
+	day1_start := strings.Index(data, day1)
+	println(day1_start)
+	//return float64(day1_start), nil
+	absdev := `absoluteDevelopment":`
+	println(absdev)
+	absolutedevelopmentStart := strings.Index(data[day1_start:], absdev) + len(absdev)
+
+	println(absolutedevelopmentStart)
+	absolutedevelopmentEnd := strings.Index(data[absolutedevelopmentStart:], `,`) + absolutedevelopmentStart
+	println(absolutedevelopmentEnd)
+	todayChange, _ := strconv.ParseFloat(data[absolutedevelopmentStart:absolutedevelopmentEnd], 32)
+	println(todayChange)
+
+	closeText := `close":`
+
+	closeStart := strings.Index(data[day1_start:], closeText) + len(closeText)
+	println(closeStart)
+	closeEnd := strings.Index(data[closeStart:], `,`) + closeStart
+	println(closeEnd)
+	close, _ := strconv.ParseFloat(data[closeStart:closeEnd], 32)
+	println(close)
+
+	return todayChange, nil
+
+}
+
 func extractDevelopment(period string, data string) (float64, error) {
 	head := `"` + period + `","development":`
 	start := strings.Index(data, head) + len(head)

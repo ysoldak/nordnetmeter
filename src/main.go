@@ -24,6 +24,8 @@ var idx = 0
 var periods = []string{"DAY_1", "WEEK_1", "MONTH_1", "YEAR_1", "ALL"}
 var returns = []float64{0, 0, 0, 0, 0}
 
+var last = float64(0)
+
 var servoValue = 1500 * time.Microsecond
 
 func main() {
@@ -87,6 +89,7 @@ func main() {
 	for {
 		led.Set(!led.Get())
 		returns, _ = nordnet.getReturns(periods, nordnetId)
+		last, _ = nordnet.getLast(nordnetId)
 		servoValue = scale(returns[idx])
 
 		// servoValue += delta
@@ -118,5 +121,6 @@ func show() {
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 64, 12, fmt.Sprintf("%f", returns[idx]), WHITE, tinyfont.NO_ROTATION)
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 64, 28, periods[idx], WHITE, tinyfont.NO_ROTATION)
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 14, 28, "SAVE", WHITE, tinyfont.NO_ROTATION)
+	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 14, 12, fmt.Sprintf("%f", last), WHITE, tinyfont.NO_ROTATION)
 	display.device.Display()
 }
