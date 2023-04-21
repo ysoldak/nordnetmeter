@@ -10,14 +10,12 @@ import (
 
 type nordnet struct {
 	server string
-	// token  string
 	client HttpClient
 }
 
 func newNordnet() *nordnet {
 	return &nordnet{
 		server: "https://api.prod.nntech.io",
-		// token:  blynkToken,
 		client: HttpClient{
 			timeout:     time.Second,
 			connections: map[string]net.Conn{},

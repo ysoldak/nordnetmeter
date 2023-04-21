@@ -12,24 +12,10 @@ var WHITE = color.RGBA{255, 255, 255, 255}
 
 type Display struct {
 	device ssd1306.Device
-
-	// Bluetooth  bool
-	// blinkCount int
-	// blinkColor color.RGBA
-
-	// Paired   bool
-	// Stable   bool
-	// Address  string
-	// Version  string
-	// Channels [3]uint16
 }
 
 func newDisplay() *Display {
-	return &Display{
-		// Paired:   false,
-		// Address:  "B1:6B:00:B5:BA:BE",
-		// Channels: [3]uint16{1500, 1500, 1500},
-	}
+	return &Display{}
 }
 
 func (d *Display) Configure() {
@@ -46,26 +32,3 @@ func (d *Display) Configure() {
 	})
 	d.device.ClearDisplay()
 }
-
-// func (d *Display) Run() {
-// 	d.showAddress()
-// 	clearVersion := true
-// 	for {
-// 		if d.Stable {
-// 			if clearVersion {
-// 				d.showVersion(BLACK)
-// 				clearVersion = false
-// 			}
-// 			for i := 0; i < 3; i++ {
-// 				d.showValue(i)
-// 			}
-// 		} else {
-// 			d.showVersion(WHITE)
-// 		}
-// 		if d.Bluetooth {
-// 			d.showPaired()
-// 		}
-// 		d.device.Display()
-// 		time.Sleep(100 * time.Millisecond)
-// 	}
-// }
