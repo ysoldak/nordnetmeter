@@ -65,7 +65,7 @@ func (b *nordnet) getLast(instrumentId int) (float64, error) {
 	//return float64(day1_start), nil
 	absdev := `absoluteDevelopment":`
 	println(absdev)
-	absolutedevelopmentStart := strings.Index(data[day1_start:], absdev) + len(absdev)
+	absolutedevelopmentStart := strings.Index(data[day1_start:], absdev) + len(absdev) + day1_start
 
 	println(absolutedevelopmentStart)
 	absolutedevelopmentEnd := strings.Index(data[absolutedevelopmentStart:], `,`) + absolutedevelopmentStart
@@ -75,14 +75,14 @@ func (b *nordnet) getLast(instrumentId int) (float64, error) {
 
 	closeText := `close":`
 
-	closeStart := strings.Index(data[day1_start:], closeText) + len(closeText)
+	closeStart := strings.Index(data[day1_start:], closeText) + len(closeText) + day1_start
 	println(closeStart)
 	closeEnd := strings.Index(data[closeStart:], `,`) + closeStart
 	println(closeEnd)
 	close, _ := strconv.ParseFloat(data[closeStart:closeEnd], 32)
 	println(close)
 
-	return todayChange, nil
+	return close + todayChange, nil
 
 }
 
