@@ -18,7 +18,9 @@ var button = machine.D11
 
 var display *Display
 
-const nordnetId = 17385289
+const nordnetId = 17385289 // instrument id
+
+var outpwm = machine.PWM2
 
 var idx = 0
 var periods = []string{"DAY_1", "WEEK_1", "MONTH_1", "YEAR_1", "ALL"}
@@ -30,13 +32,25 @@ var servoValue = 1500 * time.Microsecond
 
 func main() {
 
-	// Indicate wake up
 	led.Configure(machine.PinConfig{Mode: machine.PinOutput})
 	led.High()
 
-	servo.Configure(machine.PinConfig{Mode: machine.PinOutput})
-	servo.Low()
+	setupButton()
+	setupServo()
+	setupDisplay()
 
+	time.Sleep(3 * time.Second)
+
+	setupDataFetch()
+
+	for {
+		led.Set(!led.Get()) // heartbeat
+		time.Sleep(1 * time.Second)
+	}
+
+}
+
+func setupButton() {
 	button.Configure(machine.PinConfig{Mode: machine.PinInputPullup})
 	time.Sleep(time.Second)
 	prev := int64(0)
@@ -54,19 +68,47 @@ func main() {
 		servoValue = scale(returns[idx])
 		show()
 	})
+}
 
+func setupServo() {
+	servo.Configure(machine.PinConfig{Mode: machine.PinOutput})
+	servo.Low()
+
+	err := outpwm.Configure(machine.PWMConfig{
+		Period: uint64(20_000 * time.Microsecond),
+	})
+	if err != nil {
+		println("failed to configure PWM")
+		return
+	}
+	outch, err := outpwm.Channel(servo)
+	if err != nil {
+		println("failed to configure PWM channel")
+		return
+	}
+	outpwm.Set(outch, 0)
+	go func() {
+		for {
+			servoValue = scale(returns[idx])
+			value := float64(outpwm.Top()) / 20_000 * float64(servoValue.Microseconds())
+			outpwm.Set(outch, uint32(value))
+			time.Sleep(100 * time.Millisecond)
+		}
+	}()
+}
+
+func setupDisplay() {
 	display = newDisplay()
 	display.Configure()
-	show()
 	go func() {
 		for {
 			show()
 			time.Sleep(5 * time.Second)
 		}
 	}()
+}
 
-	time.Sleep(3 * time.Second)
-
+func setupDataFetch() {
 	// Connect to Wifi
 	err := setupWifi(wifiSsid, wifiPass)
 	if err != nil {
@@ -74,26 +116,12 @@ func main() {
 		time.Sleep(time.Second)
 		arm.SystemReset()
 	}
-
 	nordnet := newNordnet()
-
-	go func() {
-		for {
-			servo.High()
-			time.Sleep(servoValue)
-			servo.Low()
-			time.Sleep(20_000*time.Microsecond - servoValue)
-		}
-	}()
-
 	for {
-		led.Set(!led.Get())
 		returns, _ = nordnet.getReturns(periods, nordnetId)
 		last, _ = nordnet.getLast(nordnetId)
-		servoValue = scale(returns[idx])
 		time.Sleep(5 * time.Second)
 	}
-
 }
 
 func scale(percent float64) time.Duration {
