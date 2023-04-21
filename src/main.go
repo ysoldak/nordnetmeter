@@ -118,9 +118,9 @@ func scale(percent float64) time.Duration {
 func show() {
 	display.device.ClearDisplay()
 	// tinydraw.FilledRectangle(&display.device, 64, 0, 28, 32, BLACK)
-	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 64, 12, fmt.Sprintf("%f", returns[idx]), WHITE, tinyfont.NO_ROTATION)
+	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 64, 12, fmt.Sprintf("%.02f", returns[idx]), WHITE, tinyfont.NO_ROTATION)
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 64, 28, periods[idx], WHITE, tinyfont.NO_ROTATION)
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 14, 28, "SAVE", WHITE, tinyfont.NO_ROTATION)
-	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 14, 12, fmt.Sprintf("%f", last), WHITE, tinyfont.NO_ROTATION)
+	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 14, 12, fmt.Sprintf("%.02f", last), WHITE, tinyfont.NO_ROTATION)
 	display.device.Display()
 }
