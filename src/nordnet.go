@@ -59,26 +59,17 @@ func (b *nordnet) getLast(instrumentId int) (float64, error) {
 	data := string(res.bytes)
 	day1 := `"DAY_1"`
 	day1_start := strings.Index(data, day1)
-	println(day1_start)
-	//return float64(day1_start), nil
 	absdev := `absoluteDevelopment":`
-	println(absdev)
 	absolutedevelopmentStart := strings.Index(data[day1_start:], absdev) + len(absdev) + day1_start
 
-	println(absolutedevelopmentStart)
 	absolutedevelopmentEnd := strings.Index(data[absolutedevelopmentStart:], `,`) + absolutedevelopmentStart
-	println(absolutedevelopmentEnd)
 	todayChange, _ := strconv.ParseFloat(data[absolutedevelopmentStart:absolutedevelopmentEnd], 32)
-	println(todayChange)
 
 	closeText := `close":`
 
 	closeStart := strings.Index(data[day1_start:], closeText) + len(closeText) + day1_start
-	println(closeStart)
 	closeEnd := strings.Index(data[closeStart:], `,`) + closeStart
-	println(closeEnd)
 	close, _ := strconv.ParseFloat(data[closeStart:closeEnd], 32)
-	println(close)
 
 	return close + todayChange, nil
 
