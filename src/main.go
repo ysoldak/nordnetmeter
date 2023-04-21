@@ -57,6 +57,7 @@ func main() {
 
 	display = newDisplay()
 	display.Configure()
+	show()
 	go func() {
 		for {
 			show()
@@ -85,39 +86,32 @@ func main() {
 		}
 	}()
 
-	// delta := 100 * time.Microsecond
 	for {
 		led.Set(!led.Get())
 		returns, _ = nordnet.getReturns(periods, nordnetId)
 		last, _ = nordnet.getLast(nordnetId)
 		servoValue = scale(returns[idx])
-
-		// servoValue += delta
-		// if servoValue > 2000*time.Microsecond {
-		// 	servoValue = 1000 * time.Microsecond
-		// }
-		// println(servoValue)
-
 		time.Sleep(5 * time.Second)
 	}
 
 }
 
 func scale(percent float64) time.Duration {
+	// percent = -7 // for calibration
 	percent *= -1 // inversion
 	if percent < -5 {
-		return 750 * time.Microsecond
+		return 700 * time.Microsecond
 	}
 	if percent > 5 {
-		return 2350 * time.Microsecond
+		return 2250 * time.Microsecond
 	}
-	x := (percent + 5) * 150
-	return time.Duration(750+x) * time.Microsecond
+	calibration := float64(-25)
+	x := (percent+5)*140 + calibration
+	return time.Duration(800+x) * time.Microsecond
 }
 
 func show() {
 	display.device.ClearDisplay()
-	// tinydraw.FilledRectangle(&display.device, 64, 0, 28, 32, BLACK)
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 64, 12, fmt.Sprintf("%.02f", returns[idx]), WHITE, tinyfont.NO_ROTATION)
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 64, 28, periods[idx], WHITE, tinyfont.NO_ROTATION)
 	tinyfont.WriteLineRotated(&display.device, &proggy.TinySZ8pt7b, 14, 28, "SAVE", WHITE, tinyfont.NO_ROTATION)
