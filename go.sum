@@ -12,6 +12,8 @@ github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/sago35/go-bdf v0.0.0-20200313142241-6c17821c91c4/go.mod h1:rOebXGuMLsXhZAC6mF/TjxONsm45498ZyzVhel++6KM=
 github.com/valyala/fastjson v1.6.3/go.mod h1:CLCAqky6SMuOcxStkYQvblddUtoRxhYMGLrsQns1aXY=
+github.com/ysoldak/tinygo-drivers v0.15.2-0.20230421090656-00144a59a758 h1:MJ26DQcgAhMdC2cddvrI7JZYIJdCQjJC24fLnLlGblc=
+github.com/ysoldak/tinygo-drivers v0.15.2-0.20230421090656-00144a59a758/go.mod h1:J4+51Li1kcfL5F93kmnDWEEzQF3bLGz0Am3Q7E2a8/E=
 golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d/go.mod h1:023OzeP/+EPmXeapQh35lcL3II3LrY8Ic+EFFKVhULM=
 golang.org/x/net v0.0.0-20210614182718-04defd469f4e h1:XpT3nA5TvE525Ne3hInMh6+GETgn27Zfm9dxsThnX2Q=
 golang.org/x/net v0.0.0-20210614182718-04defd469f4e/go.mod h1:9nx3DQGgdP8bBQD5qxJ1jj9UTztislL4KSBs9R2vV5Y=
@@ -24,6 +26,7 @@ golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGm
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 h1:E7g+9GITq07hpfrRu66IVDexMakfv52eLZ2CXBWiKr4=
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
 tinygo.org/x/tinyfont v0.2.1/go.mod h1:eLqnYSrFRjt5STxWaMeOWJTzrKhXqpWw7nU3bPfKOAM=
+tinygo.org/x/tinyfont v0.3.0 h1:HIRLQoI3oc+2CMhPcfv+Ig88EcTImE/5npjqOnMD4lM=
 tinygo.org/x/tinyfont v0.3.0/go.mod h1:+TV5q0KpwSGRWnN+ITijsIhrWYJkoUCp9MYELjKpAXk=
 tinygo.org/x/tinyfs v0.2.0/go.mod h1:6ZHYdvB3sFYeMB3ypmXZCNEnFwceKc61ADYTYHpep1E=
 tinygo.org/x/tinyterm v0.1.0/go.mod h1:/DDhNnGwNF2/tNgHywvyZuCGnbH3ov49Z/6e8LPLRR4=

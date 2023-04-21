@@ -25,22 +25,26 @@ func newNordnet() *nordnet {
 	}
 }
 
-func (b *nordnet) getReturn(period string, instrumentId int) (float64, error) {
+func (b *nordnet) getReturns(periods []string, instrumentId int) ([]float64, error) {
+	returns := make([]float64, len(periods))
 	url := b.server + "/market-data/price-time-series/v2/returns/" + strconv.Itoa(instrumentId)
 	println(url)
 	req := newGET(url, nil)
 	res, err := b.client.sendHttp(req, false)
 	if err != nil {
-		return 0.0, err
+		return returns, err
 	} else {
 		trace(string(res.bytes))
 	}
 
 	data := string(res.bytes)
-	head := `"` + period + `","development":`
-	start := strings.Index(data, head) + len(head)
-	end := strings.Index(data[start:], `,`) + start
-	return strconv.ParseFloat(data[start:end], 32)
+	for i, period := range periods {
+		head := `"` + period + `","development":`
+		start := strings.Index(data, head) + len(head)
+		end := strings.Index(data[start:], `,`) + start
+		returns[i], _ = strconv.ParseFloat(data[start:end], 32)
+	}
+	return returns, nil
 }
 
 func extractDevelopment(period string, data string) (float64, error) {
