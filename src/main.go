@@ -118,9 +118,19 @@ func setupDataFetch() {
 	}
 	nordnet := newNordnet()
 	for {
-		returns, _ = nordnet.getReturns(periods, nordnetId)
-		last, _ = nordnet.getLast(nordnetId)
-		time.Sleep(5 * time.Second)
+		returns, err = nordnet.getReturns(periods, nordnetId)
+		if err != nil {
+			println(err.Error())
+			time.Sleep(time.Second)
+			arm.SystemReset()
+		}
+		last, err = nordnet.getLast(nordnetId)
+		if err != nil {
+			println(err.Error())
+			time.Sleep(time.Second)
+			arm.SystemReset()
+		}
+		time.Sleep(60 * time.Second)
 	}
 }
 
