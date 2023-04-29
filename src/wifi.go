@@ -39,10 +39,6 @@ func configureWifinina() {
 	adaptor.Configure()
 }
 
-func stopWifinina() {
-	adaptor.Stop()
-}
-
 func connectToAP(ssid, pass string) (err error) {
 
 	time.Sleep(2 * time.Second)
